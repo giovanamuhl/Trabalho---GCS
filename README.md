@@ -142,7 +142,7 @@ cd prog-web/usuario
 ./mvnw spring-boot:run
 ```
 
-Aguarde a mensagem:
+Aguarde a inicialização da aplicação:
 ```
 Started TicketHubApplication in X seconds
 ```
