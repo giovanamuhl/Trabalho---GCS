@@ -94,7 +94,7 @@
 
                         <a th:href="@{/admin/eventos/{id}/editar(id=${evento.id})}" class="btn btn-warning btn-sm">Editar</a>
 
-                        <form th:action="@{/admin/eventos/{id}/excluir(id=${evento.id})}" method="post" class="d-inline">
+                       <form th:action="@{/admin/eventos/{id}/excluir(id=${evento.id})}" method="post" class="d-inline" onsubmit="return confirm('Tem certeza que deseja excluir este evento?');">
                             <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
                         </form>
                     </div>

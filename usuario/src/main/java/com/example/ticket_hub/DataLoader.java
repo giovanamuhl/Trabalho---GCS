@@ -29,6 +29,11 @@ public class DataLoader implements CommandLineRunner {
         admin.setSenha("1234");
         usuarioRepository.save(admin);
 
+        Usuario cliente = new Usuario();
+        cliente.setUsuario("cliente");
+        cliente.setSenha("1234");
+        usuarioRepository.save(cliente);
+
         eventoRepository.save(criarEvento(
                 "Festival de Música Eletrônica",
                 "Uma noite incrível com os melhores DJs do Brasil.",

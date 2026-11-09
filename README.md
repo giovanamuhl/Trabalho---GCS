@@ -1,6 +1,6 @@
 # TicketHub
 
-Sistema web de compra de ingressos para eventos, desenvolvido com Spring Boot e Thymeleaf.
+O TicketHub é um sistema web para compra e gerenciamento de ingressos de eventos, desenvolvido com Spring Boot e Thymeleaf.
 
 ---
 
@@ -37,6 +37,9 @@ ticket-hub/
         ├── java/com/example/ticket_hub/
         │   ├── TicketHubApplication.java   ← ponto de entrada
         │   ├── DataLoader.java             ← popula o banco ao iniciar
+        │   ├── config/
+        │   │   ├── LoginInterceptor.java   ← bloqueia acesso sem login às rotas de compra
+        │   │   └── WebConfig.java          ← registra o interceptor nas rotas protegidas
         │   ├── controller/
         │   │   ├── EventoController.java   ← rotas da tela inicial e busca
         │   │   ├── PedidoController.java   ← rotas de pagamento, confirmação e meus ingressos
@@ -115,13 +118,15 @@ imagem
 | GET | `/pagamento/{eventoId}` | Tela de checkout do evento |
 | POST | `/pedidos` | Processa a compra |
 | GET | `/confirmacao/{pedidoId}` | Tela de confirmação pós-compra |
-| GET | `/meus-ingressos?email=` | Lista pedidos por e-mail |
+| GET | `/meus-ingressos` | Lista os pedidos do usuário logado |
 | GET | `/admin/eventos` | Painel administrativo — lista eventos e formulário para criar |
 | GET | `/admin/eventos/{id}/editar` | Formulário pré-preenchido para editar um evento |
 | POST | `/admin/eventos/salvar` | Cria ou atualiza um evento |
 | POST | `/admin/eventos/{id}/excluir` | Remove um evento |
 
 > As rotas `/admin/eventos/**` exigem uma sessão logada com o usuário `admin` — sem isso, o usuário é redirecionado para `/login`.
+>
+> As rotas `/pagamento/{eventoId}`, `/pedidos`, `/confirmacao/{pedidoId}` e `/meus-ingressos` exigem login. O bloqueio é feito pelo `LoginInterceptor` (pasta `config/`), que redireciona para `/login` quando não há sessão. Os pedidos são buscados pelo usuário da sessão, então cada usuário vê apenas os próprios.
 
 ---
 
@@ -136,13 +141,13 @@ imagem
 
 ```bash
 # 1. Entrar na pasta do projeto
-cd prog-web/usuario
+cd usuario
 
 # 2. Rodar a aplicação
 ./mvnw spring-boot:run
 ```
 
-Aguarde a inicialização da aplicação:
+Aguarde a inicialização da aplicação e a mensagem: 
 ```
 Started TicketHubApplication in X seconds
 ```
@@ -156,10 +161,10 @@ Started TicketHubApplication in X seconds
 
 ### Login de teste
 
-| Campo | Valor |
-|---|---|
-| Usuário | `admin` |
-| Senha | `1234` |
+| Perfil | Usuário | Senha |
+|---|---|---|
+| Administrador | `admin` | Definida em `app.admin.senha` no arquivo `application.properties` |
+| Cliente | `cliente` | `1234` |
 
 > Ao logar com o usuário `admin`, o sistema redireciona automaticamente para o painel administrativo (`/admin/eventos`). Qualquer outro usuário é redirecionado para a tela inicial (`/`).
 

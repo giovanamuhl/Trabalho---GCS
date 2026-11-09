@@ -22,6 +22,10 @@ public class Pedido {
     @JoinColumn(name = "evento_id")
     private Evento evento;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
     @Column(nullable = false)
     private String nomeComprador;
 

@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
+
 @Controller
 public class EventoController {
 
@@ -15,14 +17,14 @@ public class EventoController {
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("eventos", eventoRepository.findAll());
+        model.addAttribute("eventos", eventoRepository.findByDataGreaterThanEqual(LocalDateTime.now()));
         return "index";
     }
 
     @GetMapping("/buscar")
     public String buscar(@RequestParam String termo, Model model) {
         String termoBusca = "%" + termo + "%";
-        model.addAttribute("eventos", eventoRepository.buscar(termoBusca));
+        model.addAttribute("eventos", eventoRepository.buscar(termoBusca, LocalDateTime.now()));
         model.addAttribute("termo", termo);
         return "index";
     }

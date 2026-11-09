@@ -16,30 +16,20 @@
                 <img src="https://img.icons8.com/?size=40&id=2xIX3PtQG26u&format=png&color=6f42c1" alt="Logo" class="me-2">
                 <a class="navbar-brand fw-bold" th:href="@{/}" style="color:#05000f;">TicketHub</a>
             </div>
-            <a th:href="@{/}" class="btn btn-outline-secondary btn-sm">Ver Eventos</a>
+            <div class="d-flex gap-2">
+                <a th:href="@{/}" class="btn btn-outline-secondary btn-sm">Ver Eventos</a>
+                <a th:href="@{/logout}" class="btn btn-danger btn-sm">Sair</a>
+            </div>
         </div>
     </nav>
 
     <div class="container py-5" style="max-width:1000px;">
         <h2 class="fw-bold mb-4">Meus Ingressos</h2>
 
-        <!-- Busca por e-mail -->
-        <form th:action="@{/meus-ingressos}" method="get" class="mb-4">
-            <div class="input-group">
-                <input type="email"
-                       name="email"
-                       class="form-control"
-                       placeholder="Digite seu e-mail para ver seus ingressos"
-                       th:value="${email}"
-                       required>
-                <button type="submit" class="btn btn-roxo">Buscar</button>
-            </div>
-        </form>
-
         <!-- Sem ingressos -->
         <div class="alert alert-info"
-             th:if="${pedidos != null and #lists.isEmpty(pedidos)}">
-            Nenhum ingresso encontrado para este e-mail.
+             th:if="${#lists.isEmpty(pedidos)}">
+            Você ainda não comprou nenhum ingresso.
         </div>
 
         <!-- Lista de pedidos -->
@@ -58,6 +48,8 @@
                             </p>
                             <p><strong>Local:</strong> <span th:text="${pedido.evento.local}"></span></p>
                             <p><strong>Quantidade:</strong> <span th:text="${pedido.quantidade}"></span> ingresso(s)</p>
+                            <p><strong>Forma de pagamento:</strong> <span th:text="${pedido.formaPagamento}"></span></p>
+                            <p><strong>Comprador:</strong> <span th:text="${pedido.nomeComprador}"></span></p>
                             <p class="mb-0"><strong>Pedido:</strong> #<span th:text="${pedido.id}"></span></p>
                         </div>
                     </div>
